@@ -1,0 +1,2 @@
+recursive-include pdf2table/templates *
+recursive-include pdf2table/static *
