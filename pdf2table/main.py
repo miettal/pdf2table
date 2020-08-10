@@ -3,6 +3,8 @@ from flask import request
 
 from flask_wtf import FlaskForm
 
+import tabula
+
 from wtforms import SubmitField
 from wtforms import StringField
 
@@ -21,8 +23,9 @@ def index():
     return render_template('index.html', form=form)
 
 
-@app.route('/table', methods=['GET'])
-@cache.cached(timeout=60 * 60)
+@app.route('/table')
+@cache.cached()
 def table():
     form = PDFForm(request.args)
-    return render_template('table.html', form=form)
+    df = tabula.read_pdf(form.pdf.data)
+    return render_template('table.html', form=form, df=df)
