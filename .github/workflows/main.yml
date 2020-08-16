@@ -1,0 +1,19 @@
+name: ci
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: sudo apt-get install -y python3 python3-pip python3-setuptools
+      - run: sudo pip3 install tox
+      - run: tox -e py38
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: sudo apt-get install -y python3 python3-pip python3-setuptools
+      - run: sudo pip3 install tox
+      - run: tox -e flake8

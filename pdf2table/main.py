@@ -1,3 +1,6 @@
+import re
+
+from flask import abort
 from flask import render_template
 from flask import request
 
@@ -13,11 +16,11 @@ from . import cache
 
 
 class PDFForm(FlaskForm):
-    pdf = StringField('pdf')
+    pdf = StringField('pdf', render_kw={'placeholder': 'http[s]://...'})
     get_table = SubmitField('GetTable!')
 
 
-@app.route('/', methods=['GET'])
+@app.route('/')
 def index():
     form = PDFForm()
     return render_template('index.html', form=form)
@@ -27,5 +30,7 @@ def index():
 @cache.cached()
 def table():
     form = PDFForm(request.args)
-    df = tabula.read_pdf(form.pdf.data)
+    if not re.match('https?://.+', form.pdf.data):
+        return abort(400)
+    df = tabula.read_pdf(form.pdf.data, pages='all')
     return render_template('table.html', form=form, df=df)
