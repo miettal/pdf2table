@@ -1,3 +1,4 @@
+"""main.py"""
 import re
 
 from flask import abort
@@ -8,8 +9,8 @@ from flask_wtf import FlaskForm
 
 import tabula
 
-from wtforms import SubmitField
 from wtforms import StringField
+from wtforms import SubmitField
 
 from . import app
 from . import cache
@@ -22,6 +23,7 @@ class PDFForm(FlaskForm):
 
 @app.route('/')
 def index():
+    """/."""
     form = PDFForm()
     return render_template('index.html', form=form)
 
@@ -29,6 +31,7 @@ def index():
 @app.route('/table')
 @cache.cached()
 def table():
+    """/table."""
     form = PDFForm(request.args)
     if not re.match('https?://.+', form.pdf.data):
         return abort(400)
