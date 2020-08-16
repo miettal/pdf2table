@@ -7,6 +7,8 @@ from flask import request
 
 from flask_wtf import FlaskForm
 
+from googlesearch import search
+
 import tabula
 
 from wtforms import StringField
@@ -35,5 +37,16 @@ def table():
     form = PDFForm(request.args)
     if not re.match('https?://.+', form.pdf.data):
         return abort(400)
+    app.logger.debug('pdf : {:s}'.format(form.pdf.data))
     df = tabula.read_pdf(form.pdf.data, pages='all')
     return render_template('table.html', form=form, df=df)
+
+
+@app.route('/sitemap.xml')
+@cache.cached()
+def sitemap():
+    """/sitemap.xml."""
+    pdf_list = []
+    for url in search('site:go.jp filetype:pdf 一覧表', stop=100):
+        pdf_list.append(url)
+    return render_template('sitemap.xml', pdf_list=pdf_list)

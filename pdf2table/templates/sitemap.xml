@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>
+            https://pdf2table.taisyo.jp{{ url_for('index') }}
+        </loc>
+    </url>
+    {% for pdf in pdf_list %}
+        <url>
+            <loc>
+                https://pdf2table.taisyo.jp{{ url_for('table', pdf=pdf) }}
+            </loc>
+        </url>
+    {% endfor %}
+</urlset>

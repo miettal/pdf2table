@@ -12,5 +12,6 @@ setup(
         'Flask-WTF',
         'Flask-Caching',
         'tabula-py',
+        'google',
     ],
 )
