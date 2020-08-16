@@ -3,9 +3,8 @@ on: [push]
 
 jobs:
   test:
-    #runs-on: ubuntu-latest
-    container:
-      image: python
+    runs-on: ubuntu-latest
+    container: python
     steps:
       - uses: actions/checkout@v2
       - run: sudo apt-get install -y python3 python3-pip python3-setuptools
