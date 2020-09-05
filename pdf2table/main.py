@@ -31,15 +31,15 @@ def index():
 
 
 @app.route('/table')
-@cache.cached()
+@cache.cached(query_string=True)
 def table():
     """/table."""
     form = PDFForm(request.args)
     if not re.match('https?://.+', form.pdf.data):
         return abort(400)
     app.logger.debug('pdf : {:s}'.format(form.pdf.data))
-    df = tabula.read_pdf(form.pdf.data, pages='all')
-    return render_template('table.html', form=form, df=df)
+    df_list = tabula.read_pdf(form.pdf.data, pages='all')
+    return render_template('table.html', form=form, df_list=df_list)
 
 
 @app.route('/sitemap.xml')
